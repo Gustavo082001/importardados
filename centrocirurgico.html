@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exibição de PDF com PDF.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.15.349/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: normal;
+        }
+
+        #pdf-upload {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #pdf-upload:hover {
+            background-color: #007BFF;
+        }
+
+        #coordinates {
+            text-align: center;
+            margin: 20px auto;
+            font-size: 1rem;
+            color: #555;
+            background-color: #e7f7e4;
+            padding: 10px;
+            border-radius: 5px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        #pdf-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 70%;
+            margin-left: 20px;
+            padding-bottom: 40px;
+        }
+
+        canvas {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #form-container {
+            width: 28%;
+            margin-top: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        #form-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #007BFF;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Exibição de PDF com PDF.js</h1>
+    </header>
+
+    <input type="file" id="pdf-upload" accept=".pdf" />
+
+    <!-- Exibição das coordenadas -->
+    <div id="coordinates">Clique no PDF para obter as coordenadas</div>
+
+    <!-- Contêiner para o PDF e Formulário -->
+    <div class="content-container">
+        <!-- Formulário -->
+        <div id="form-container">
+            <h2>Cadastro</h2>
+            <form id="user-form">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Data de Nascimento</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="surgery">Aviso de Cirurgia (Apenas Números)</label>
+                    <input type="number" id="surgery" name="surgery" required>
+                </div>
+                <div class="form-group">
+                    <label for="psychobox">Psicobox (Apenas Números)</label>
+                    <input type="number" id="psychobox" name="psychobox" required>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <!-- Contêiner para o PDF -->
+        <div id="pdf-container"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Exibição de PDF. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        let pdfDoc = null;
+
+        // Função para renderizar a página do PDF
+        function renderPage(pageNum) {
+            pdfDoc.getPage(pageNum).then(function(page) {
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Renderiza a página no canvas
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise.then(function() {
+                    document.getElementById('pdf-container').appendChild(canvas);
+
+                    // Evento de clique para capturar as coordenadas
+                    canvas.addEventListener('click', function(event) {
+                        const rect = canvas.getBoundingClientRect();
+                        const x = event.clientX - rect.left;
+                        const y = event.clientY - rect.top;
+                        
+                        // Exibe as coordenadas
+                        document.getElementById('coordinates').textContent = `Coordenadas: X: ${x.toFixed(2)}, Y: ${y.toFixed(2)}`;
+                    });
+
+                    // Se for a última página, não faz mais nada
+                    if (pageNum < pdfDoc.numPages) {
+                        renderPage(pageNum + 1);
+                    }
+                });
+            });
+        }
+
+        // Função para carregar o arquivo PDF
+        function loadPDF(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const pdfData = new Uint8Array(event.target.result);
+                pdfjsLib.getDocument(pdfData).promise.then(function(pdf) {
+                    pdfDoc = pdf;
+                    // Começa a renderizar a partir da primeira página
+                    renderPage(1);
+                }).catch(function(error) {
+                    console.error("Erro ao carregar o PDF: ", error);
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Evento para carregar o PDF
+        document.getElementById('pdf-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                loadPDF(file);
+            }
+        });
+
+    </script>
+
+</body>
+</html>

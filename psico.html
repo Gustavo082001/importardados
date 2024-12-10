@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Componentes de Medicações</title>
+    <style>
+        /* Estilo geral da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f8fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Contêiner principal */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        /* Barra de pesquisa */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #searchInput {
+            width: 80%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #e01818;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        #searchInput:focus {
+            border-color: #1c598a;
+        }
+
+        /* Estilização dos botões */
+        .medication {
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #e01818;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            transition: background-color 0.3s ease-in-out, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #8f0404;
+            transform: scale(1.02);
+        }
+
+        button:active {
+            background-color: #f81e1e;
+        }
+
+        /* Estilização das áreas de componentes */
+        .medication-components {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #d1d1d1;
+            background-color: #f0f2f5;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        h3 {
+            color: #2c3e50;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Estilo para a imagem do medicamento */
+        .medication-image {
+            width: 100px;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 20px;
+        }
+
+        /* Contêiner para imagem e lista de componentes */
+        .components-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Psicotrópicos e seus Componentes</h1>
+
+        <!-- Barra de pesquisa -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar medicação..." onkeyup="searchMedication()">
+        </div>
+
+        <!-- Medicações e seus componentes -->
+        <div class="medication">
+            <button onclick="toggleComponents('med1')">Morfina</button>
+            <div id="med1" class="medication-components">
+                <h3>Componentes Mofirna</h3>
+                <div class="components-wrapper">
+                    <img src="https://via.placeholder.com/100" alt="Medicação 1" class="medication-image">
+                    <ul>
+                        <li>Seringa de 10ML</li>
+                        <li>Água bidestilada</li>
+                        <li>Agulha Verde</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="medication">
+            <button onclick="toggleComponents('med2')">Tramadol</button>
+            <div id="med2" class="medication-components">
+                <h3>Componentes Tramadol</h3>
+                <div class="components-wrapper">
+                    <img src="https://via.placeholder.com/100" alt="Medicação 2" class="medication-image">
+                    <ul>
+                        <li>Seringa de 5ML</li>
+                        <li>Agulha Rosa</li>
+                        <li>Soro de 100ML</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="medication">
+            <button onclick="toggleComponents('med3')">Dramim</button>
+            <div id="med3" class="medication-components">
+                <h3>Componentes Dramim</h3>
+                <div class="components-wrapper">
+                    <img src="https://via.placeholder.com/100" alt="Medicação 3" class="medication-image">
+                    <ul>
+                        <li>Soro de 100ML</li>
+                        <li>Agulha Rosa</li>
+                        <li>Seringa de 10ML</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="medication">
+                <button onclick="toggleComponents('med4')">Bicarbonato de Sódio</button>
+                <div id="med4" class="medication-components">
+                    <h3>Componentes Bicarbonato de Sódio</h3>
+                    <div class="components-wrapper">
+                        <img src="https://via.placeholder.com/100" alt="Medicação 4" class="medication-image">
+                        <ul>
+                            <li>Subir apenas se estiver na mesma solicitação Omeprazol Capsula</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="medication">
+                <button onclick="toggleComponents('med5')">Heparina Sódica Subcutânea (AMP)</button>
+                <div id="med5" class="medication-components">
+                    <h3>Componentes Heparina Sódica Subcutânea</h3>
+                    <div class="components-wrapper">
+                        <img src="https://via.placeholder.com/100" alt="Medicação 5" class="medication-image">
+                        <ul>
+                            <li>Seringa de 1ML</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="medication">
+                <button onclick="toggleComponents('med6')">Haloperidol</button>
+                <div id="med6" class="medication-components">
+                    <h3>Haloperidol</h3>
+                    <div class="components-wrapper">
+                        <img src="https://via.placeholder.com/100" alt="Medicação 6" class="medication-image">
+                        <ul>
+                            <li>Seringa de 5ML</li>
+                            <li>Agulha Rosa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script>
+        // Função para alternar a exibição dos componentes da medicação
+        function toggleComponents(medicationId) {
+            var components = document.getElementById(medicationId);
+            if (components.style.display === "block") {
+                components.style.display = "none";
+            } else {
+                components.style.display = "block";
+            }
+        }
+
+        // Função para pesquisar medicações
+        function searchMedication() {
+            var input, filter, buttons, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            buttons = document.getElementsByTagName('button');
+
+            // Itera pelos botões e busca a medicação correspondente
+            for (i = 0; i < buttons.length; i++) {
+                txtValue = buttons[i].textContent || buttons[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    buttons[i].style.display = "";
+                    buttons[i].parentElement.style.display = "";
+                } else {
+                    buttons[i].style.display = "none";
+                    buttons[i].parentElement.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

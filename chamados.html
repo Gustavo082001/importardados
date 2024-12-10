@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Prescrição</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none; 
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        textarea {
+            resize: none;
+        }
+        
+        .radio-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form action="https://api.sheetmonkey.io/form/ggLRG1JqoobkzWTwZmQERU" method="post">
+        <h2>Solicitar Medicação</h2>
+        
+        <label for="dataPrescricao">Data da Solicitação:</label>
+        <input type="text" id="dataPrescricao" name="dataPrescricao" readonly>
+
+        <label for="horarioPrescricao">Horário da Solicitação:</label>
+        <input type="text" id="horarioPrescricao" name="horarioPrescricao" readonly>
+
+        <label for="nomePaciente">Nome do Paciente:</label>
+        <input type="text" id="nomePaciente" name="nomePaciente" required>
+    
+        <label for="leito">Leito:</label>
+        <input type="text" id="leito" name="leito" required>
+    
+        <label for="medicacao">Medicação:</label>
+        <input type="text" id="medicacao" name="medicacao" required>
+
+        <label for="prescricaoTipo">Prescrição solicitada:</label>
+        <div class="radio-group">
+            <label><input type="radio" id="prescricaoAgora" name="prescricaoTipo" value="Prescrição de Agora" required> Prescrição de Agora</label>
+            <label><input type="radio" id="prescricaoHorario" name="prescricaoTipo" value="Prescrição de Horário" required> Prescrição de Horário</label>
+        </div>
+    
+        <label for="observacoes">Observações:</label>
+        <textarea id="observacoes" name="observacoes" rows="4" cols="50"></textarea>
+    
+        <input type="submit" value="Enviar">
+    
+        <script>
+            function formatDate(date) {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`; // Formato DD/MM/YYYY
+            }
+
+            function formatTime(date) {
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`; // Formato HH:MM
+            }
+
+            const now = new Date();
+            document.getElementById('dataPrescricao').value = formatDate(now);
+            document.getElementById('horarioPrescricao').value = formatTime(now);
+        </script>
+    </form>
+</body>
+</html>

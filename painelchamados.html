@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Dados</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    /* Estilizando a barra de navegação */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #918e8e;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .navbar input[type="text"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 250px;
+      font-size: 14px;
+    }
+    .navbar button {
+      background-color: #23a5cc;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      position: relative;
+    }
+    .filter-panel {
+      display: none;
+      position: absolute;
+      top: 50px; /* Alinha o painel ao lado do botão */
+      right: 0; /* Ajusta a distância do painel do botão */
+      background: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      z-index: 1000;
+    }
+    .filter-panel h2 {
+      margin-top: 0;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .filter-panel label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .filter-panel input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .filter-panel button {
+      background-color: #23a5cc;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .data-container {
+      margin-top: 20px;
+    }
+    .data-item {
+      background-color: #fbff288e; /* Cor de fundo amarela */
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      color: #555;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .data-item:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .data-field {
+      margin-bottom: 10px;
+    }
+    .data-field span {
+      font-weight: bold;
+      color: #333;
+    }
+    .error {
+      color: red;
+      text-align: center;
+    }
+    .loading {
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Barra de Navegação -->
+    <div class="navbar">
+      <input type="text" placeholder="Buscar...">
+      <div style="position: relative;">
+        <button id="filterButton">Filtrar</button>
+        <!-- Menu de Filtro -->
+        <div class="filter-panel" id="filterPanel">
+          <h2>Filtros</h2>
+          <label><input type="checkbox" value="Prescrição de Agora"> Prescrição de Agora</label>
+          <label><input type="checkbox" value="Prescrição de Horário"> Prescrição de Horário</label>
+          <button id="applyFilter">Aplicar Filtro</button>
+        </div>
+      </div>
+    </div>
+
+    <h1>Painel de Chamados</h1>
+    <div id="loading" class="loading">Carregando...</div>
+    <div id="data-container" class="data-container"></div>
+    <div id="error-message" class="error"></div>
+  </div>
+
+  <script>
+    const apiUrl = 'https://sheetdb.io/api/v1/3cf90hdg8y08w';
+
+    // Função para formatar a data no formato 'DD/MM/YYYY'
+    function formatarData(data) {
+      const dia = String(data.getDate()).padStart(2, '0');
+      const mes = String(data.getMonth() + 1).padStart(2, '0'); // Mês começa de 0
+      const ano = data.getFullYear();
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    // Função para formatar o horário no formato 'HH:MM' (sem os segundos)
+    function formatarHorario(horario) {
+      return horario.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function fetchAndDisplayData(filtroSelecionado = []) {
+      const loadingElement = document.getElementById('loading');
+      loadingElement.style.display = 'block';
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        const dataContainer = document.getElementById('data-container');
+        const errorMessage = document.getElementById('error-message');
+        dataContainer.innerHTML = '';
+        errorMessage.textContent = '';
+        loadingElement.style.display = 'none';
+
+        if (data.length === 0) {
+          errorMessage.textContent = 'Nenhuma informação encontrada.';
+          return;
+        }
+
+        // Filtrar os dados com base nas opções selecionadas
+        const dadosFiltrados = data.filter(item => {
+          if (filtroSelecionado.length === 0) {
+            return true; // Se nenhum filtro for selecionado, mostrar todos
+          }
+          return filtroSelecionado.includes(item.prescricaoTipo);
+        });
+
+        dadosFiltrados.forEach(item => {
+          const itemElement = document.createElement('div');
+          itemElement.className = 'data-item';
+
+          // Captura a data e o horário atuais
+          const dataAtual = new Date();
+          const horarioAtual = new Date();
+
+          itemElement.innerHTML = `
+            <div class="data-field"><span>Data da Solicitação:</span> ${formatarData(dataAtual)}</div>
+            <div class="data-field"><span>Horário da Solicitação:</span> ${formatarHorario(horarioAtual)}</div>
+            <div class="data-field"><span>Nome do Paciente:</span> ${item.nomePaciente}</div>
+            <div class="data-field"><span>Leito:</span> ${item.leito}</div>
+            <div class="data-field"><span>Medicação:</span> ${item.medicacao}</div>
+            <div class="data-field"><span>Tipo de Prescrição:</span> ${item.prescricaoTipo}</div>
+            <div class="data-field"><span>Observações:</span> ${item.observacoes}</div>
+          `;
+          dataContainer.appendChild(itemElement);
+        });
+      } catch (error) {
+        loadingElement.style.display = 'none';
+        document.getElementById('error-message').textContent = 'Erro ao buscar os dados: ' + error.message;
+      }
+    }
+
+    document.getElementById('filterButton').addEventListener('click', () => {
+      const filterPanel = document.getElementById('filterPanel');
+      filterPanel.style.display = filterPanel.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.getElementById('applyFilter').addEventListener('click', () => {
+      const checkboxes = document.querySelectorAll('.filter-panel input[type="checkbox"]:checked');
+      const filtroSelecionado = Array.from(checkboxes).map(checkbox => checkbox.value);
+      fetchAndDisplayData(filtroSelecionado);
+      document.getElementById('filterPanel').style.display = 'none';
+    });
+
+    // Inicializar com todos os dados
+    fetchAndDisplayData();
+  </script>
+
+</body>
+</html>

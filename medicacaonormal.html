@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicações e seus Componentes</title>
+    <style>
+        /* Estilo geral da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f8fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Contêiner principal */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        /* Barra de pesquisa */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #searchInput {
+            width: 80%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #2980b9;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        #searchInput:focus {
+            border-color: #1c598a;
+        }
+
+        /* Estilização dos botões */
+        .medication {
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            transition: background-color 0.3s ease-in-out, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #1c598a;
+            transform: scale(1.02);
+        }
+
+        button:active {
+            background-color: #154a6a;
+        }
+
+        /* Estilização das áreas de componentes */
+        .medication-components {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #d1d1d1;
+            background-color: #f0f2f5;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        h3 {
+            color: #2c3e50;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Estilo para a imagem do medicamento */
+        .medication-image {
+            width: 100px;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 20px;
+        }
+
+        /* Contêiner para imagem e lista de componentes */
+        .components-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Medicações e seus Componentes</h1>
+
+        <!-- Barra de pesquisa -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar medicação..." onkeyup="searchMedication()">
+        </div>
+
+        <!-- Medicações e seus componentes -->
+        <div id="medicationsContainer"></div>
+
+    </div>
+
+    <script>
+        // Dados das medicações
+        const medications = [
+            { id: 'med1', name: 'Betametasona', components: ['Seringa de 5ML', 'Agulha Verde', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med2', name: 'Cefazolina', components: ['Seringa de 10ML', 'Agulha Verde', 'Agulha Rosa', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med3', name: 'Hidrocortisona', components: ['Seringa de 10ML', 'Agulha Verde', 'Agulha Rosa', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med4', name: 'Omeprazol', components: ['Seringa de 10ML', 'Agulha Verde', 'Agulha Rosa', 'Diluente se conter'], img: 'https://via.placeholder.com/100' },
+            { id: 'med5', name: 'Piperacilina', components: ['Água Bidestilada (2x)', 'Seringa de 20ML', 'Soro de 100ML', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med6', name: 'Meropenem', components: ['Seringa de 10ML', 'Agulha Rosa', 'Soro de 100ML', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med7', name: 'Cefepime', components: ['Seringa de 10ML', 'Agulha Rosa', 'Soro de 100ML', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med8', name: 'Ceftriaxona', components: ['Seringa de 10ML', 'Agulha Rosa', 'Soro de 100ML', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med9', name: 'Claritromicina', components: ['Seringa de 10ML', 'Agulha Rosa', 'Soro de 100ML', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med10', name: 'Amoxicilina', components: ['Seringa de 10ML', 'Agulha Rosa', 'Soro de 100ML', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med11', name: 'Ampicilina', components: ['Seringa de 10ML', 'Agulha Rosa', 'Soro de 100ML', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med12', name: 'Polimixina', components: ['Soro Glicosado 250ML', 'Agulha Rosa', 'Seringa de 20ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med13', name: 'Dipirona', components: ['Seringa de 10ML', 'Água Bidestilada', 'Agulha Verde'], img: 'https://via.placeholder.com/100' },
+            { id: 'med14', name: 'Tenoxican', components: ['Seringa de 10ML', 'Água Bidestilada', 'Agulha Verde', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med15', name: 'Vancomicina', components: ['Soro de 250ML', 'Seringa de 10ML', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med16', name: 'Teicoplamina', components: ['Soro de 100ML', 'Agulha Rosa', 'Seringa de 10ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med17', name: 'Ondasetrona', components: ['Seringa de 5ML', 'Agulha Verde', 'Soro de 100ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med18', name: 'Brometo Ipatrópio', components: ['Cloreto de Sódio (Ampola)'], img: 'https://via.placeholder.com/100' },
+            { id: 'med19', name: 'Dexametasona 2MG', components: ['Água Bidestilada', 'Agulha Rosa', 'Seringa de 10ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med20', name: 'Bromoprida', components: ['Água Bidestilada', 'Agulha Verde', 'Seringa de 10ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med22', name: 'Amicacina', components: ['Soro de 100ML', 'Agulha Verde', 'Seringa de 5ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med23', name: 'Ácido Tranexâmico', components: ['Soro de 100ML', 'Seringa de 5ML', 'Agulha Verde'], img: 'https://via.placeholder.com/100' },
+            { id: 'med24', name: 'Ertapenem', components: ['Soro de 100ML', 'Seringa de 10ML', 'Água Bidestilada', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med25', name: 'Tigeciclina', components: ['Soro de 100ML', 'Seringa de 10ML', 'Água Bidestilada', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med26', name: 'Metoclopramida', components: ['Seringa de 10ML', 'Água Bidestilada', 'Agulha Verde'], img: 'https://via.placeholder.com/100' },
+            { id: 'med27', name: 'Tasocina', components: ['Soro de 100ML', 'Seringa de 20ML', 'Água Bidestilada (2x)', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med28', name: 'Clindamicina', components: ['Soro de 100ML', 'Seringa de 5ML', 'Agulha Verde', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med29', name: 'Tiamina', components: ['Soro de 100ML', 'Seringa de 5ML', 'Agulha Verde'], img: 'https://via.placeholder.com/100' },
+            { id: 'med30', name: 'Furosemida', components: ['Seringa de 5ML', 'Agulha Verde'], img: 'https://via.placeholder.com/100' },
+            { id: 'med31', name: 'Dexametasona 10MG', components: ['Soro de 100ML', 'Seringa de 5ML', 'Agulha Verde', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med32', name: 'Hioscina + Dipirona', components: ['Cloreto de Sódio AMP (2x)', 'Seringa de 20ML', 'Agulha Verde'], img: 'https://via.placeholder.com/100' },
+            { id: 'med33', name: 'Ceftazidima', components: ['Soro de 100ML', 'Seringa de 10ML', 'Agulha Rosa', 'Água Bidestilada'], img: 'https://via.placeholder.com/100' },
+            { id: 'med34', name: 'Deslanosideo', components: ['Seringa de 5ML', 'Agulha Verde', 'Observação: Subir apenas se for de Horário'], img: 'https://via.placeholder.com/100' },
+            { id: 'med35', name: 'Dimenidrato + Piridoxina + Glicose', components: ['Soro de 100ML', 'Seringa de 10ML', 'Agulha Rosa'], img: 'https://via.placeholder.com/100' },
+            { id: 'med36', name: 'Terbutalina', components: ['Seringa de 1ML'], img: 'https://via.placeholder.com/100' },
+            { id: 'med37', name: 'Neostigmina', components: ['Seringa de 5ML', 'Agulha Verde'], img: 'https://via.placeholder.com/100' }
+
+
+            
+            ];
+
+ // Função para criar os botões de medicação
+ function createMedicationButtons() {
+            const container = document.getElementById('medicationsContainer');
+            container.innerHTML = '';
+
+            // Ordena as medicações em ordem alfabética
+            medications.sort((a, b) => a.name.localeCompare(b.name));
+
+            medications.forEach(medication => {
+                const button = document.createElement('button');
+                button.className = 'medication';
+                button.innerText = medication.name;
+                button.onclick = () => toggleComponents(medication.id);
+
+                const componentsDiv = document.createElement('div');
+                componentsDiv.className = 'medication-components';
+                componentsDiv.id = `components-${medication.id}`;
+                componentsDiv.innerHTML = `
+                    <div class="components-wrapper">
+                        <img src="${medication.img}" class="medication-image" alt="${medication.name}">
+                        <div>
+                            <h3>Componentes:</h3>
+                            <ul>
+                                ${medication.components.map(component => `<li>${component}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(button);
+                container.appendChild(componentsDiv);
+            });
+        }
+
+        // Função para alternar a exibição dos componentes da medicação
+        function toggleComponents(medicationId) {
+            const componentsDiv = document.getElementById(`components-${medicationId}`);
+            if (componentsDiv.style.display === 'none' || componentsDiv.style.display === '') {
+                componentsDiv.style.display = 'block';
+            } else {
+                componentsDiv.style.display = 'none';
+            }
+        }
+
+        // Função de pesquisa
+        function searchMedication() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const buttons = document.querySelectorAll('.medication');
+            const componentsDivs = document.querySelectorAll('.medication-components');
+
+            buttons.forEach(button => {
+                const text = button.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    button.style.display = 'block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            componentsDivs.forEach(div => {
+                const button = document.querySelector(`button[onclick="toggleComponents('${div.id.split('-')[1]}')"]`);
+                if (button && button.style.display !== 'none') {
+                    div.style.display = 'block';
+                } else {
+                    div.style.display = 'none';
+                }
+            });
+        }
+
+        // Cria os botões de medicação ao carregar a página
+        window.onload = createMedicationButtons;
+</script>
+</body>
+</html>

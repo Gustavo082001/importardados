@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador e Editor de PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #controls {
+            margin-bottom: 10px;
+        }
+        #coordinates {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        #pdf-container {
+            position: relative;
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 800px;
+            height: auto; /* Ajuste para altura automática */
+            overflow: auto;
+        }
+        #pdf-render {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .draggable-text {
+            position: absolute;
+            cursor: move;
+            color: red; /* Cor do texto para melhor visibilidade */
+            font-size: 16px;
+            user-select: none;
+            /* Removido background e border */
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualizador e Editor de PDF</h1>
+    <div id="controls">
+        <input type="file" id="file-input" accept="application/pdf">
+        <button id="add-text-btn">Adicionar Texto</button>
+        <div id="coordinates">Coordenadas: X: 0, Y: 0</div>
+    </div>
+    <div id="pdf-container">
+        <canvas id="pdf-render"></canvas>
+    </div>
+
+    <!-- Inclui a biblioteca PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.7.107/pdf.min.js"></script>
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const addTextBtn = document.getElementById('add-text-btn');
+        const pdfContainer = document.getElementById('pdf-container');
+        const pdfRender = document.getElementById('pdf-render');
+        const coordinatesDiv = document.getElementById('coordinates');
+
+        let pdfDoc = null;
+        let pageNum = 1;
+        let scale = 1.0; // Será ajustado dinamicamente
+
+        // Configura o worker do PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.7.107/pdf.worker.min.js';
+
+        // Carrega e renderiza o PDF selecionado
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                    const typedArray = new Uint8Array(this.result);
+                    pdfjsLib.getDocument(typedArray).promise.then((pdf) => {
+                        pdfDoc = pdf;
+                        renderPage(pageNum);
+                    }).catch(err => {
+                        alert('Erro ao carregar o PDF: ' + err.message);
+                    });
+                };
+                fileReader.readAsArrayBuffer(file);
+            } else {
+                alert('Por favor, selecione um arquivo PDF válido.');
+            }
+        });
+
+        function renderPage(num) {
+            pdfDoc.getPage(num).then((page) => {
+                // Obtém o tamanho da página em pontos (1 ponto = 1/72 polegadas)
+                const viewportPt = page.getViewport({ scale: 1.0 });
+                const pageWidthInInches = viewportPt.width / 72;
+                const pageHeightInInches = viewportPt.height / 72;
+
+                // Obtém o DPI da tela (pixels por polegada)
+                const dpi = 96 * window.devicePixelRatio; // Considera a densidade da tela
+
+                // Calcula a escala para que 1 polegada no PDF seja igual a 96 pixels na tela
+                scale = dpi / 72;
+
+                const viewport = page.getViewport({ scale: scale });
+                pdfRender.height = viewport.height;
+                pdfRender.width = viewport.width;
+
+                const ctx = pdfRender.getContext('2d');
+                ctx.clearRect(0, 0, pdfRender.width, pdfRender.height);
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                page.render(renderContext).promise.then(() => {
+                    console.log('Página renderizada com escala:', scale);
+                }).catch(err => {
+                    alert('Erro ao renderizar a página: ' + err.message);
+                });
+            }).catch(err => {
+                alert('Erro ao obter a página: ' + err.message);
+            });
+        }
+
+        // Adiciona texto ao PDF
+        addTextBtn.addEventListener('click', () => {
+            const text = document.createElement('div');
+            text.classList.add('draggable-text');
+            text.textContent = 'Texto Editável';
+            text.style.left = '50px';
+            text.style.top = '50px';
+            text.contentEditable = true; // Permite editar o texto
+            pdfContainer.appendChild(text);
+            makeDraggable(text);
+        });
+
+        function makeDraggable(element) {
+            let offsetX = 0, offsetY = 0, isDragging = false;
+
+            element.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                const rect = pdfContainer.getBoundingClientRect();
+                offsetX = e.clientX - (rect.left + parseInt(element.style.left));
+                offsetY = e.clientY - (rect.top + parseInt(element.style.top));
+                // Para trazer o elemento para frente
+                element.style.zIndex = 1000;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    const containerRect = pdfContainer.getBoundingClientRect();
+                    let x = e.clientX - containerRect.left - offsetX;
+                    let y = e.clientY - containerRect.top - offsetY;
+
+                    // Limites para não sair do contêiner
+                    x = Math.max(0, Math.min(x, pdfRender.width - element.offsetWidth));
+                    y = Math.max(0, Math.min(y, pdfRender.height - element.offsetHeight));
+
+                    element.style.left = `${x}px`;
+                    element.style.top = `${y}px`;
+                    coordinatesDiv.textContent = `Coordenadas: X: ${x.toFixed(2)}, Y: ${y.toFixed(2)}`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    element.style.zIndex = '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

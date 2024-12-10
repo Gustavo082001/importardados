@@ -1,0 +1,105 @@
+2024-12-08 00:28:39,377 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.32:5000
+2024-12-08 00:28:39,377 INFO [33mPress CTRL+C to quit[0m
+2024-12-08 00:28:39,382 INFO  * Restarting with stat
+2024-12-08 00:28:48,113 WARNING  * Debugger is active!
+2024-12-08 00:28:48,115 INFO  * Debugger PIN: 114-902-551
+2024-12-08 00:29:14,825 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.32:5000
+2024-12-08 00:29:14,825 INFO [33mPress CTRL+C to quit[0m
+2024-12-08 00:29:14,826 INFO  * Restarting with stat
+2024-12-08 00:29:23,333 WARNING  * Debugger is active!
+2024-12-08 00:29:23,333 INFO  * Debugger PIN: 114-902-551
+2024-12-08 00:29:31,962 INFO 127.0.0.1 - - [08/Dec/2024 00:29:31] "GET / HTTP/1.1" 200 -
+2024-12-08 00:29:32,067 INFO 127.0.0.1 - - [08/Dec/2024 00:29:32] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-08 00:29:33,769 INFO 127.0.0.1 - - [08/Dec/2024 00:29:33] "GET / HTTP/1.1" 200 -
+2024-12-08 00:29:33,960 INFO 127.0.0.1 - - [08/Dec/2024 00:29:33] "GET / HTTP/1.1" 200 -
+2024-12-08 00:29:34,120 INFO 127.0.0.1 - - [08/Dec/2024 00:29:34] "GET / HTTP/1.1" 200 -
+2024-12-08 00:29:40,459 INFO Informações extraídas com sucesso.
+2024-12-08 00:29:40,466 WARNING Data não encontrada no PDF.
+2024-12-08 00:29:40,466 INFO 127.0.0.1 - - [08/Dec/2024 00:29:40] "[31m[1mPOST /processar-pdf HTTP/1.1[0m" 400 -
+2024-12-08 00:29:48,245 INFO Informações extraídas com sucesso.
+2024-12-08 00:29:48,245 INFO Processando página 1/21
+2024-12-08 00:29:48,245 ERROR Erro ao gerar PDF com dados: 'dict' object has no attribute 'merge_page'
+2024-12-08 00:29:48,245 ERROR Erro ao gerar o PDF final.
+2024-12-08 00:29:48,252 INFO 127.0.0.1 - - [08/Dec/2024 00:29:48] "[35m[1mPOST /processar-pdf HTTP/1.1[0m" 500 -
+2024-12-08 00:29:52,544 INFO 127.0.0.1 - - [08/Dec/2024 00:29:52] "GET / HTTP/1.1" 200 -
+2024-12-08 00:29:55,843 INFO Informações extraídas com sucesso.
+2024-12-08 00:29:55,843 INFO Processando página 1/21
+2024-12-08 00:29:55,843 ERROR Erro ao gerar PDF com dados: 'dict' object has no attribute 'merge_page'
+2024-12-08 00:29:55,843 ERROR Erro ao gerar o PDF final.
+2024-12-08 00:29:55,850 INFO 127.0.0.1 - - [08/Dec/2024 00:29:55] "[35m[1mPOST /processar-pdf HTTP/1.1[0m" 500 -
+2024-12-08 00:30:22,891 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.32:5000
+2024-12-08 00:30:22,892 INFO [33mPress CTRL+C to quit[0m
+2024-12-08 00:30:22,894 INFO  * Restarting with stat
+2024-12-08 00:30:31,569 WARNING  * Debugger is active!
+2024-12-08 00:30:31,572 INFO  * Debugger PIN: 114-902-551
+2024-12-08 00:30:32,730 INFO 127.0.0.1 - - [08/Dec/2024 00:30:32] "GET / HTTP/1.1" 200 -
+2024-12-08 00:30:37,653 INFO Informações extraídas com sucesso.
+2024-12-08 00:30:37,653 INFO Processando página 1/21
+2024-12-08 00:30:37,653 ERROR Erro ao gerar PDF com dados: 'dict' object has no attribute 'merge_page'
+2024-12-08 00:30:37,653 ERROR Erro ao gerar o PDF final.
+2024-12-08 00:30:37,653 INFO 127.0.0.1 - - [08/Dec/2024 00:30:37] "[35m[1mPOST /processar-pdf HTTP/1.1[0m" 500 -
+2024-12-08 00:31:04,358 INFO Informações extraídas com sucesso.
+2024-12-08 00:31:04,365 INFO Processando página 1/21
+2024-12-08 00:31:04,365 ERROR Erro ao gerar PDF com dados: 'dict' object has no attribute 'merge_page'
+2024-12-08 00:31:04,365 ERROR Erro ao gerar o PDF final.
+2024-12-08 00:31:04,365 INFO 127.0.0.1 - - [08/Dec/2024 00:31:04] "[35m[1mPOST /processar-pdf HTTP/1.1[0m" 500 -
+2024-12-08 00:32:02,417 INFO  * Detected change in 'C:\\Users\\gusta\\Documents\\Agir app farmácia\\importardados.py', reloading
+2024-12-08 00:32:02,464 INFO  * Restarting with stat
+2024-12-08 00:32:11,039 WARNING  * Debugger is active!
+2024-12-08 00:32:11,042 INFO  * Debugger PIN: 114-902-551
+2024-12-08 00:32:22,672 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.32:5000
+2024-12-08 00:32:22,673 INFO [33mPress CTRL+C to quit[0m
+2024-12-08 00:32:22,674 INFO  * Restarting with stat
+2024-12-08 00:32:24,803 INFO 127.0.0.1 - - [08/Dec/2024 00:32:24] "GET / HTTP/1.1" 200 -
+2024-12-08 00:32:24,898 INFO 127.0.0.1 - - [08/Dec/2024 00:32:24] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-08 00:32:29,555 INFO Informações extraídas com sucesso.
+2024-12-08 00:32:29,555 DEBUG Data: 05/12/2024
+2024-12-08 00:32:29,555 DEBUG Avisos: ['539960', '540536', '540360', '540591', '540332', '539737', '540406', '540408', '540601', '540409', '540021', '540018', '540153', '540035', '540046', '540410', '540036', '540038', '540412', '540041', '540893']
+2024-12-08 00:32:29,555 DEBUG Pacientes: [('539960', 'MARIA DOS REIS\nSILVA LEMOS'), ('540536', 'ARTHUR LUCENA\nMUNIZ'), ('540360', 'ENRICO SOUZA\nFREIRE'), ('540591', 'SEVERINA LUIS DA\nSILVA SOUZA'), ('540332', 'PEDRO LOURENCO\nALVES DE ALMEIDA T'), ('539737', 'FRANCISCO JUNIOR\nBISPO'), ('540406', 'BENEDITO FERREIRA\nDOS SANTOS'), ('540408', 'EUDNA MARIA LUIZ\nDO NASCIMENTO'), ('540601', 'VALDIMAR DE SOUZA\nSANTOS'), ('540409', 'JOAO BATISTA\nPEREIRA DO NASCIM'), ('540021', 'MARIA APARECIDA\nOSTROWSKIJ'), ('540018', 'SANDRA FERNANDA\nGALENO CARREIRO'), ('540153', 'ALESSANDRO\nCOTRIN MAIA'), ('540035', 'LAZARA MARIA DE\nJESUS'), ('540046', 'ANA BEATRIZ\nGARCIA NEIVA'), ('540410', 'LEONILIA ANTONIA\nDA SILVA'), ('540036', 'JOAO CARLOS\nFRANCISCO DE SOUZ'), ('540038', 'RAYSSA FERREIRA\nSILVA'), ('540412', 'HAMILTON GARCIA\nRIBEIRO DA SILVA'), ('540041', 'MARTA HELENA\nMERENCIO'), ('540893', 'WAGNER DE LIMA\nSILVA')]
+2024-12-08 00:32:29,555 INFO Processando página 1/21
+2024-12-08 00:32:29,555 ERROR Erro ao gerar PDF com dados: 'dict' object has no attribute 'merge_page'
+2024-12-08 00:32:29,555 ERROR Erro ao gerar o PDF final.
+2024-12-08 00:32:29,562 INFO 127.0.0.1 - - [08/Dec/2024 00:32:29] "[35m[1mPOST /processar-pdf HTTP/1.1[0m" 500 -
+2024-12-08 00:32:31,305 WARNING  * Debugger is active!
+2024-12-08 00:32:31,308 INFO  * Debugger PIN: 114-902-551
+2024-12-08 00:32:35,222 INFO  * Detected change in 'C:\\Users\\gusta\\Documents\\Agir app farmácia\\importardados.py', reloading
+2024-12-08 00:32:35,227 INFO  * Detected change in 'C:\\Users\\gusta\\Documents\\Agir app farmácia\\importardados.py', reloading
+2024-12-08 00:32:35,279 INFO  * Restarting with stat
+2024-12-08 00:35:03,636 INFO  * Restarting with stat
+2024-12-08 00:37:39,923 INFO  * Restarting with stat
+2024-12-08 00:40:51,551 INFO  * Restarting with stat
+2024-12-08 00:42:39,676 INFO  * Restarting with stat
+2024-12-08 00:44:13,065 INFO  * Restarting with stat
+2024-12-08 00:44:36,614 INFO  * Restarting with stat
+2024-12-08 00:46:03,604 INFO  * Restarting with stat
+2024-12-08 00:48:12,117 INFO  * Restarting with stat
+2024-12-08 00:48:53,026 INFO  * Restarting with stat
+2024-12-08 00:49:41,575 INFO  * Restarting with stat
+2024-12-08 00:52:10,527 INFO  * Restarting with stat
+2024-12-08 00:52:56,761 INFO  * Restarting with stat
+2024-12-08 00:54:35,211 INFO  * Restarting with stat
+2024-12-08 00:56:18,108 INFO  * Restarting with stat
+2024-12-08 00:57:11,348 INFO  * Restarting with stat
+2024-12-08 01:00:11,721 INFO  * Restarting with stat
+2024-12-08 01:02:53,864 INFO  * Restarting with stat
+2024-12-08 01:03:12,770 INFO  * Restarting with stat
+2024-12-08 01:09:51,702 INFO  * Restarting with stat
+2024-12-08 01:10:24,413 INFO  * Restarting with stat
+2024-12-08 01:13:54,251 INFO  * Restarting with stat
+2024-12-08 01:18:13,090 INFO  * Restarting with stat
+2024-12-08 01:20:06,606 INFO  * Restarting with stat
+2024-12-08 01:23:30,623 INFO  * Restarting with stat
+2024-12-08 01:24:16,503 INFO  * Restarting with stat
+2024-12-08 01:25:20,656 INFO  * Restarting with stat
