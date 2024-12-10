@@ -19,6 +19,7 @@ TEMPLATE_PATH = os.getenv('PDF_TEMPLATE_PATH', 'receituariopsico.pdf')
 # Limitar o tamanho máximo do arquivo para 16 MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
 
+
 def extrair_informacoes(conteudo_pdf: bytes):
     """
     Extrai informações específicas de um arquivo PDF.
@@ -54,6 +55,7 @@ def extrair_informacoes(conteudo_pdf: bytes):
     except Exception as e:
         logging.error(f"Erro inesperado ao extrair informações: {e}")
         return {"erro": "Ocorreu um erro inesperado durante a extração."}
+
 
 def gerar_pdf_com_dados(template_path, dados):
     """
@@ -135,6 +137,7 @@ def index():
     """
     return render_template('painelreceituariopsico.html')
 
+
 @app.route('/processar-pdf', methods=['POST'])
 def processar_pdf():
     """
@@ -179,5 +182,7 @@ def processar_pdf():
         logging.error(f"Erro no processamento do PDF: {e}")
         return f"Ocorreu um erro durante o processamento: {e}", 500
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)  # nosec
+
